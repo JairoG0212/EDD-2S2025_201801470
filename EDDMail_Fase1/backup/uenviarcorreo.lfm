@@ -1,0 +1,82 @@
+object FormEnviarCorreo: TFormEnviarCorreo
+  Left = 368
+  Height = 400
+  Top = 32
+  Width = 500
+  Caption = 'Enviar Correo'
+  ClientHeight = 400
+  ClientWidth = 500
+  Position = poScreenCenter
+  object lblTitulo: TLabel
+    Left = 200
+    Height = 19
+    Top = 20
+    Width = 123
+    Alignment = taCenter
+    Caption = 'Enviar Correo'
+    Font.Height = -16
+    Font.Name = 'Sans'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lblDestinatario: TLabel
+    Left = 20
+    Height = 19
+    Top = 70
+    Width = 85
+    Caption = 'Destinatario:'
+  end
+  object edtDestinatario: TEdit
+    Left = 120
+    Height = 36
+    Top = 65
+    Width = 300
+    TabOrder = 0
+  end
+  object lblAsunto: TLabel
+    Left = 20
+    Height = 19
+    Top = 110
+    Width = 49
+    Caption = 'Asunto:'
+  end
+  object edtAsunto: TEdit
+    Left = 120
+    Height = 36
+    Top = 105
+    Width = 300
+    TabOrder = 1
+  end
+  object lblMensaje: TLabel
+    Left = 20
+    Height = 19
+    Top = 150
+    Width = 60
+    Caption = 'Mensaje:'
+  end
+  object memoMensaje: TMemo
+    Left = 120
+    Height = 150
+    Top = 145
+    Width = 300
+    TabOrder = 2
+  end
+  object btnEnviar: TButton
+    Left = 150
+    Height = 30
+    Top = 320
+    Width = 100
+    Caption = 'Enviar'
+    TabOrder = 3
+    OnClick = btnEnviarClick
+  end
+  object btnCancelar: TButton
+    Left = 270
+    Height = 30
+    Top = 320
+    Width = 100
+    Caption = 'Cancelar'
+    TabOrder = 4
+    OnClick = btnCancelarClick
+  end
+end

@@ -1,0 +1,22 @@
+digraph ListaUsuarios {
+  rankdir=LR;
+  node [shape=record];
+
+  labelloc="t";
+  label="Lista Enlazada";
+  fontsize=20;
+  fontname="Arial Bold";
+
+  nodo0 [label="ID: 1\nNombre: Luis Garcia\nUsuario: auxluis\nPassword: auxluis123\nEmail: aux-luis@edd.com\nTeléfono: 12345678"];
+  nodo1 [label="ID: 2\nNombre: Marcos Itzep\nUsuario: auxmarcos\nPassword: auxmarcos123\nEmail: aux-marcosg@edd.com\nTeléfono: 87654321"];
+  nodo2 [label="ID: 3\nNombre: Juan Pérez\nUsuario: jperez\nPassword: jperez123\nEmail: juan.perez@edd.com\nTeléfono: 55555555"];
+  nodo3 [label="ID: 1\nNombre: Luis Garcia\nUsuario: auxluis\nPassword: auxluis123\nEmail: aux-luis@edd.com\nTeléfono: 12345678"];
+  nodo4 [label="ID: 2\nNombre: Marcos Itzep\nUsuario: auxmarcos\nPassword: auxmarcos123\nEmail: aux-marcosg@edd.com\nTeléfono: 87654321"];
+  nodo5 [label="ID: 3\nNombre: Juan Pérez\nUsuario: jperez\nPassword: jperez123\nEmail: juan.perez@edd.com\nTeléfono: 55555555"];
+
+  nodo0 -> nodo1;
+  nodo1 -> nodo2;
+  nodo2 -> nodo3;
+  nodo3 -> nodo4;
+  nodo4 -> nodo5;
+}

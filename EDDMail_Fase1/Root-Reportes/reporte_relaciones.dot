@@ -1,0 +1,15 @@
+digraph MatrizDispersa {
+  rankdir=LR;
+  node [shape=box];
+
+  labelloc="t";
+  label="Matriz Dispersa - Reporte de Relaciones";
+  fontsize=16;
+
+  "juan.perez@edd.com" -> "aux-luis@edd.com" [label="1"];
+  "juan.perez@edd.com" -> "aux-marcosg@edd.com" [label="1"];
+  "aux-marcosg@edd.com" -> "juan.perez@edd.com" [label="1"];
+  "aux-marcosg@edd.com" -> "aux-luis@edd.com" [label="1"];
+  "aux-luis@edd.com" -> "juan.perez@edd.com" [label="1"];
+  "aux-luis@edd.com" -> "aux-marcosg@edd.com" [label="1"];
+}

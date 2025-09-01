@@ -1,0 +1,70 @@
+object FormMenuRoot: TFormMenuRoot
+  Left = 368
+  Height = 320
+  Top = 32
+  Width = 500
+  Caption = 'EDDMail - Menu Administrador'
+  ClientHeight = 320
+  ClientWidth = 500
+  Position = poScreenCenter
+  object lblTitulo: TLabel
+    Left = 128
+    Height = 25
+    Top = 30
+    Width = 244
+    Alignment = taCenter
+    Caption = 'Menu Administrador'
+    Font.Height = -21
+    Font.Name = 'Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object btnCargaMasiva: TButton
+    Left = 144
+    Height = 30
+    Top = 96
+    Width = 200
+    Caption = 'Carga Masiva'
+    Font.Height = -16
+    Font.Name = 'Sans'
+    ParentFont = False
+    TabOrder = 0
+    OnClick = btnCargaMasivaClick
+  end
+  object btnReporteDeUsuarios: TButton
+    Left = 144
+    Height = 30
+    Top = 152
+    Width = 200
+    Caption = 'Reporte de Usuarios'
+    Font.Height = -16
+    Font.Name = 'Sans'
+    ParentFont = False
+    TabOrder = 1
+    OnClick = btnReporteDeUsuariosClick
+  end
+  object btnReporteDeRelaciones: TButton
+    Left = 144
+    Height = 30
+    Top = 208
+    Width = 200
+    Caption = 'Reporte de Relaciones'
+    Font.Height = -16
+    Font.Name = 'Sans'
+    ParentFont = False
+    TabOrder = 2
+    OnClick = btnReporteDeRelacionesClick
+  end
+  object btnCerrarSesionRoot: TButton
+    Left = 280
+    Height = 30
+    Top = 272
+    Width = 200
+    Caption = 'Cerrar Sesion'
+    Font.Height = -16
+    Font.Name = 'Sans'
+    ParentFont = False
+    TabOrder = 3
+    OnClick = btnCerrarSesionRootClick
+  end
+end

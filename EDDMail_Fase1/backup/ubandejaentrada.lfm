@@ -1,0 +1,50 @@
+object FormBandejaEntrada: TFormBandejaEntrada
+  Left = 368
+  Height = 400
+  Top = 32
+  Width = 600
+  Caption = 'Bandeja de Entrada'
+  ClientHeight = 400
+  ClientWidth = 600
+  Position = poScreenCenter
+  object lblTitulo: TLabel
+    Left = 250
+    Height = 19
+    Top = 20
+    Width = 177
+    Alignment = taCenter
+    Caption = 'Bandeja de Entrada'
+    Font.Height = -16
+    Font.Name = 'Sans'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lstCorreos: TListBox
+    Left = 20
+    Height = 200
+    Top = 60
+    Width = 550
+    ItemHeight = 0
+    TabOrder = 0
+    TopIndex = -1
+  end
+  object btnCerrar: TButton
+    Left = 400
+    Height = 30
+    Top = 330
+    Width = 170
+    Caption = 'Cerrar'
+    Font.Height = -12
+    Font.Name = 'Sans'
+    ParentFont = False
+    TabOrder = 1
+  end
+  object btnEliminar: TButton
+    Left = 224
+    Height = 31
+    Top = 330
+    Width = 170
+    Caption = 'Eliminar'
+    TabOrder = 2
+  end
+end
