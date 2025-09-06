@@ -1,0 +1,22 @@
+digraph ReporteComunidades {
+  rankdir=TB;
+  node [shape=box];
+
+  labelloc="t";
+  label="Reporte de Comunidades";
+  fontsize=16;
+
+  {rank=same; com1; com2}
+
+  com1 [label="prueba 2", style=filled, fillcolor=lightblue];
+  com2 [label="prueba 1", style=filled, fillcolor=lightblue];
+
+  com1 -> com2 [color=blue];
+
+  "miem1_1" [label="juan.perez@edd.com"];
+  com1 -> "miem1_1" [color=red];
+  "miem2_1" [label="aux-marcosg@edd.com"];
+  com2 -> "miem2_1" [color=red];
+  "miem2_2" [label="aux-luis@edd.com"];
+  "miem2_1" -> "miem2_2" [color=green];
+}

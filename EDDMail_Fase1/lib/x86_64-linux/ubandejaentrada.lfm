@@ -38,6 +38,7 @@ object FormBandejaEntrada: TFormBandejaEntrada
     Font.Name = 'Sans'
     ParentFont = False
     TabOrder = 1
+    OnClick = btnCerrarClick
   end
   object btnEliminar: TButton
     Left = 224

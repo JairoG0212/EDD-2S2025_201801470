@@ -10,7 +10,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="7"/>
         <CursorPos Y="32"/>
-        <UsageCount Value="23"/>
+        <UsageCount Value="156"/>
       </Unit>
       <Unit>
         <Filename Value="ulogin.pas"/>
@@ -18,18 +18,20 @@
         <ComponentName Value="FormLogin"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UsageCount Value="23"/>
+        <TopLine Value="85"/>
+        <CursorPos X="10" Y="99"/>
+        <UsageCount Value="156"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="ustructures.pas"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="4"/>
-        <TopLine Value="670"/>
-        <CursorPos X="24" Y="697"/>
-        <UsageCount Value="23"/>
+        <TopLine Value="417"/>
+        <CursorPos Y="453"/>
+        <FoldState Value=" TCBDB9 PcibJ T7jQJE5 Pi8iQH T8jD211 T3lV036 pjKjb0\3]91kd03[94AjM044 pidjC038[95I0B815 pkVlY031 Pj950 T1rP0a%"/>
+        <UsageCount Value="156"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -39,7 +41,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="1"/>
-        <UsageCount Value="23"/>
+        <TopLine Value="70"/>
+        <CursorPos X="3" Y="70"/>
+        <UsageCount Value="156"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -49,10 +53,11 @@
         <ComponentName Value="FormMenuUsuario"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="51"/>
-        <CursorPos X="13" Y="74"/>
-        <UsageCount Value="23"/>
+        <TopLine Value="152"/>
+        <CursorPos X="28" Y="155"/>
+        <UsageCount Value="156"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -62,9 +67,10 @@
         <ComponentName Value="FormBandejaEntrada"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="6"/>
-        <CursorPos X="21"/>
-        <UsageCount Value="23"/>
+        <EditorIndex Value="7"/>
+        <TopLine Value="38"/>
+        <CursorPos X="3" Y="38"/>
+        <UsageCount Value="156"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -74,8 +80,10 @@
         <ComponentName Value="FormEnviarCorreo"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="7"/>
-        <UsageCount Value="23"/>
+        <EditorIndex Value="8"/>
+        <TopLine Value="85"/>
+        <CursorPos X="32" Y="105"/>
+        <UsageCount Value="156"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -88,7 +96,7 @@
         <EditorIndex Value="3"/>
         <TopLine Value="39"/>
         <CursorPos X="41" Y="49"/>
-        <UsageCount Value="23"/>
+        <UsageCount Value="156"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -98,69 +106,159 @@
         <ComponentName Value="FormPapelera"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="5"/>
-        <TopLine Value="4"/>
-        <CursorPos X="39" Y="17"/>
-        <UsageCount Value="21"/>
+        <EditorIndex Value="6"/>
+        <TopLine Value="71"/>
+        <CursorPos X="14" Y="74"/>
+        <UsageCount Value="154"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
+      <Unit>
+        <Filename Value="umenuroot.lfm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="65"/>
+        <CursorPos X="6" Y="57"/>
+        <UsageCount Value="0"/>
+        <DefaultSyntaxHighlighter Value="LFM"/>
+      </Unit>
+      <Unit>
+        <Filename Value="ucorreosprogramados.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormCorreosProgramados"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="5"/>
+        <CursorPos X="5" Y="75"/>
+        <UsageCount Value="116"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="ucorreosprogramados.lfm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="15"/>
+        <CursorPos X="6" Y="42"/>
+        <UsageCount Value="0"/>
+        <DefaultSyntaxHighlighter Value="LFM"/>
+      </Unit>
     </Units>
-    <JumpHistory HistoryIndex="14">
-      <Position>
-        <Filename Value="ulogin.pas"/>
-      </Position>
+    <JumpHistory HistoryIndex="29">
       <Position>
         <Filename Value="ubandejaentrada.pas"/>
-      </Position>
-      <Position>
-        <Filename Value="ubandejaentrada.pas"/>
-        <Caret Line="63" Column="4" TopLine="38"/>
-      </Position>
-      <Position>
-        <Filename Value="ubandejaentrada.pas"/>
-        <Caret Column="21"/>
-      </Position>
-      <Position>
-        <Filename Value="ucontactos.pas"/>
-      </Position>
-      <Position>
-        <Filename Value="umenuusuario.pas"/>
-      </Position>
-      <Position>
-        <Filename Value="ucontactos.pas"/>
-        <Caret Line="47" Column="9" TopLine="23"/>
-      </Position>
-      <Position>
-        <Filename Value="ucontactos.pas"/>
-        <Caret Line="32" Column="39" TopLine="20"/>
-      </Position>
-      <Position>
-        <Filename Value="ucontactos.pas"/>
-        <Caret Line="47" Column="5" TopLine="24"/>
-      </Position>
-      <Position>
-        <Filename Value="umenuusuario.pas"/>
-        <Caret Line="56" Column="33" TopLine="50"/>
-      </Position>
-      <Position>
-        <Filename Value="ucontactos.pas"/>
-        <Caret Line="64" Column="5" TopLine="39"/>
+        <Caret Line="61" Column="31" TopLine="47"/>
       </Position>
       <Position>
         <Filename Value="ustructures.pas"/>
-        <Caret Line="28" Column="45" TopLine="11"/>
+        <Caret Line="29" Column="64" TopLine="4"/>
       </Position>
       <Position>
-        <Filename Value="upapelera.pas"/>
+        <Filename Value="uenviarcorreo.pas"/>
+      </Position>
+      <Position>
+        <Filename Value="uenviarcorreo.pas"/>
+        <Caret Line="26" Column="24" TopLine="7"/>
+      </Position>
+      <Position>
+        <Filename Value="ustructures.pas"/>
+        <Caret Line="930" Column="6" TopLine="908"/>
+      </Position>
+      <Position>
+        <Filename Value="ustructures.pas"/>
+        <Caret Line="195" Column="48" TopLine="182"/>
+      </Position>
+      <Position>
+        <Filename Value="ustructures.pas"/>
+        <Caret Line="806" TopLine="786"/>
+      </Position>
+      <Position>
+        <Filename Value="ustructures.pas"/>
+        <Caret Line="820" Column="16" TopLine="796"/>
+      </Position>
+      <Position>
+        <Filename Value="ustructures.pas"/>
+        <Caret Line="690" Column="54" TopLine="668"/>
+      </Position>
+      <Position>
+        <Filename Value="ustructures.pas"/>
+        <Caret Line="937" Column="5" TopLine="911"/>
+      </Position>
+      <Position>
+        <Filename Value="ustructures.pas"/>
+        <Caret Line="999" TopLine="972"/>
+      </Position>
+      <Position>
+        <Filename Value="ustructures.pas"/>
+        <Caret Line="172" Column="69" TopLine="150"/>
+      </Position>
+      <Position>
+        <Filename Value="ustructures.pas"/>
+        <Caret Line="171" Column="46" TopLine="152"/>
+      </Position>
+      <Position>
+        <Filename Value="ustructures.pas"/>
+        <Caret Line="172" Column="13" TopLine="152"/>
+      </Position>
+      <Position>
+        <Filename Value="umenuroot.pas"/>
+      </Position>
+      <Position>
+        <Filename Value="umenuroot.pas"/>
+        <Caret Line="62" Column="5" TopLine="46"/>
+      </Position>
+      <Position>
+        <Filename Value="umenuroot.pas"/>
+        <Caret Line="156" Column="5" TopLine="131"/>
+      </Position>
+      <Position>
+        <Filename Value="umenuroot.pas"/>
+        <Caret Line="163" Column="5" TopLine="138"/>
+      </Position>
+      <Position>
+        <Filename Value="umenuroot.pas"/>
+        <Caret Line="92" Column="12" TopLine="62"/>
+      </Position>
+      <Position>
+        <Filename Value="ucorreosprogramados.pas"/>
       </Position>
       <Position>
         <Filename Value="umenuusuario.pas"/>
-        <Caret Line="2" Column="32"/>
+        <Caret Line="9" Column="75"/>
       </Position>
       <Position>
-        <Filename Value="upapelera.pas"/>
-        <Caret Line="61" Column="5" TopLine="36"/>
+        <Filename Value="ucorreosprogramados.pas"/>
+        <Caret Line="60" Column="5" TopLine="35"/>
+      </Position>
+      <Position>
+        <Filename Value="ucorreosprogramados.pas"/>
+        <Caret Line="36" Column="14" TopLine="34"/>
+      </Position>
+      <Position>
+        <Filename Value="ucorreosprogramados.pas"/>
+        <Caret Line="75" Column="5"/>
+      </Position>
+      <Position>
+        <Filename Value="umenuusuario.pas"/>
+        <Caret Line="69" Column="13" TopLine="55"/>
+      </Position>
+      <Position>
+        <Filename Value="ustructures.pas"/>
+        <Caret Line="491" Column="7" TopLine="380"/>
+      </Position>
+      <Position>
+        <Filename Value="ustructures.pas"/>
+        <Caret Line="400" TopLine="208"/>
+      </Position>
+      <Position>
+        <Filename Value="ustructures.pas"/>
+        <Caret Line="453" TopLine="417"/>
+      </Position>
+      <Position>
+        <Filename Value="umenuusuario.pas"/>
+        <Caret Line="175" Column="5" TopLine="151"/>
+      </Position>
+      <Position>
+        <Filename Value="umenuusuario.pas"/>
+        <Caret Line="139" Column="85" TopLine="132"/>
       </Position>
     </JumpHistory>
     <RunParams>

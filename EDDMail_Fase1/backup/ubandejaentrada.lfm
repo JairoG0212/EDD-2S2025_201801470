@@ -46,5 +46,6 @@ object FormBandejaEntrada: TFormBandejaEntrada
     Width = 170
     Caption = 'Eliminar'
     TabOrder = 2
+    OnClick = btnEliminarClick
   end
 end

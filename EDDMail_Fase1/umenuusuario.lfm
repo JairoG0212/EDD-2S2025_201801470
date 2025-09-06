@@ -59,6 +59,7 @@ object FormMenuUsuario: TFormMenuUsuario
     Width = 160
     Caption = 'Correos Programados'
     TabOrder = 4
+    OnClick = btnCorreosProgramadosClick
   end
   object btnAgregarContacto: TButton
     Left = 96
@@ -85,6 +86,7 @@ object FormMenuUsuario: TFormMenuUsuario
     Width = 160
     Caption = 'Actualizar Perfil'
     TabOrder = 7
+    OnClick = btnActualizarPerfilClick
   end
   object btnGenerarReportes: TButton
     Left = 96

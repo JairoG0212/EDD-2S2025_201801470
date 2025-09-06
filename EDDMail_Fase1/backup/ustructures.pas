@@ -19,6 +19,7 @@ type
     bandejaEntrada: ^TListaCorreos; //puntero para mi lista doble enlazada
     contactos: ^TListaContactos; //puntero para los contactos de la lista
     papelera: ^TPapelera;// puntero para la papelera de cada usuario
+    colaCorreos : ^TColaCorreos; // puntero para cola de correos programados
   end;
 
   // Registro para Correo
@@ -65,11 +66,33 @@ type
     siguiente: PNodoContacto;
   end;
 
+  // Nodo para cola (correos programados)
+  PNodoCola = ^TNodoCola;
+  TNodoCola = record
+    correo: TCorreo;
+    siguiente: PNodoCola;
+  end;
+
   // Nodo para pila (papelera)
   PNodoPila = ^TNodoPila;
   TNodoPila = record
     correo: TCorreo;
     siguiente: PNodoPila;
+  end;
+
+  // Nodo para miembros de comunidad
+  PNodoMiembro = ^TNodoMiembro;
+  TNodoMiembro = record
+    emailUsuario: String;
+    siguiente: PNodoMiembro;
+  end;
+
+  // Nodo para comunidades
+  PNodoComunidad = ^TNodoComunidad;
+  TNodoComunidad = record
+    nombre: String;
+    miembros: PNodoMiembro;
+    siguiente: PNodoComunidad;
   end;
 
   // Pila para papelera
@@ -98,6 +121,9 @@ type
     function Buscar(email: String): PNodoUsuario;
     function Vacia: Boolean;
     procedure GenerarReporteUsuarios(nombreArchivo: String);
+    function ActualizarUsuario(emailActual: String; nuevoUsuario: String): Integer;
+    function ActualizarTelefono(emailActual: String; nuevoTelefono: String): Integer;
+    function ExisteUsuario(nombreUsuario: String): Boolean;
   end;
 
   // Matriz dispersa para relaciones
@@ -122,6 +148,7 @@ type
       procedure AgregarCorreo(nuevoCorreo: TCorreo);
       function Vacia: Boolean;
       function ObtenerPrimero: PNodoCorreo;
+      function EliminarCorreo(indice: Integer): TCorreo;
   end;
 
   //Lista circular para contactos
@@ -137,10 +164,39 @@ type
     function Vacia: Boolean;
   end;
 
+  // Clase para manejar comunidades
+  TListaComunidades = class
+  private
+    cabeza: PNodoComunidad;
+  public
+    constructor Create;
+    destructor Destroy; override;
+    function CrearComunidad(nombre: String): Boolean;
+    function AgregarMiembro(nombreComunidad, email: String): Integer;
+    function BuscarComunidad(nombre: String): PNodoComunidad;
+    function Vacia: Boolean;
+    procedure GenerarReporteComunidades(nombreArchivo: String);
+  end;
+
+  // Cola para correos programados
+  TColaCorreos = class
+  private
+    frente: PNodoCola;
+    final: PNodoCola;
+  public
+    constructor Create;
+    destructor Destroy; override;
+    procedure Encolar(correo: TCorreo);
+    function Desencolar: TCorreo;
+    function Vacia: Boolean;
+    function ObtenerFrente: PNodoCola;
+  end;
+
 var
   listaUsuarios: TListaUsuarios;
   matrizRelaciones: TMatrizDispersa;
   usuarioActual: PNodoUsuario;
+  listaComunidades: TListaComunidades;
 
 implementation
 
@@ -174,9 +230,11 @@ begin
   nuevoNodo^.usuario.bandejaEntrada^ := TListaCorreos.Create;
   New(nuevoNodo^.usuario.contactos);
   nuevoNodo^.usuario.contactos^ := TListaContactos.Create;
-  nuevoNodo^.siguiente := cabeza;
   New(nuevoNodo^.usuario.papelera);
   nuevoNodo^.usuario.papelera^ := TPapelera.Create;
+  New(nuevoNodo^.usuario.colaCorreos);
+  nuevoNodo^.usuario.colaCorreos^ := TColaCorreos.Create;
+  nuevoNodo^.siguiente := cabeza;
   cabeza := nuevoNodo;
 end;
 
@@ -252,6 +310,7 @@ procedure TListaUsuarios.CargarDesdeJSON(nombreArchivo: String);
             usuario.bandejaEntrada := nil; //iniciar bandeja como nil
             usuario.contactos := nil; //iniciar contactos como nil
             usuario.papelera := nil; //iniciar papelera como nil
+            usuario.colaCorreos := nil; //iniciar cola correos como nil
             Insertar(usuario);
           end;
         end;
@@ -336,6 +395,99 @@ begin
 
   finally
     CloseFile(archivo);
+  end;
+
+function TListaUsuarios.ExisteUsuario(nombreUsuario: String): Boolean;
+  var
+    actual: PNodoUsuario;
+  begin
+    Result := False;
+    actual := cabeza;
+    while actual <> nil do
+    begin
+      if actual^.usuario.usuario = nombreUsuario then
+      begin
+        Result := True;
+        Exit;
+      end;
+      actual := actual^.siguiente;
+    end;
+  end;
+
+  function TListaUsuarios.ActualizarUsuario(emailActual: String; nuevoUsuario: String): Integer;
+  var
+    nodoUsuario: PNodoUsuario;
+  begin
+    // 0 = éxito, 1 = campo vacío, 2 = usuario no existe, 3 = nombre usuario ya existe, 4 = mismo valor
+
+    if Trim(nuevoUsuario) = '' then
+    begin
+      Result := 1;
+      Exit;
+    end;
+
+    nodoUsuario := Buscar(emailActual);
+    if nodoUsuario = nil then
+    begin
+      Result := 2;
+      Exit;
+    end;
+
+    if nodoUsuario^.usuario.usuario = nuevoUsuario then
+    begin
+      Result := 4;
+      Exit;
+    end;
+
+    if ExisteUsuario(nuevoUsuario) then
+    begin
+      Result := 3;
+      Exit;
+    end;
+
+    nodoUsuario^.usuario.usuario := nuevoUsuario;
+    Result := 0;
+  end;
+
+  function TListaUsuarios.ActualizarTelefono(emailActual: String; nuevoTelefono: String): Integer;
+  var
+    nodoUsuario, actual: PNodoUsuario;
+  begin
+    // 0 = éxito, 1 = campo vacío, 2 = usuario no existe, 3 = teléfono ya existe, 4 = mismo valor
+
+    if Trim(nuevoTelefono) = '' then
+    begin
+      Result := 1;
+      Exit;
+    end;
+
+    nodoUsuario := Buscar(emailActual);
+    if nodoUsuario = nil then
+    begin
+      Result := 2;
+      Exit;
+    end;
+
+    if nodoUsuario^.usuario.telefono = nuevoTelefono then
+    begin
+      Result := 4;
+      Exit;
+    end;
+
+    // Verificar si el teléfono ya existe
+    actual := cabeza;
+    while actual <> nil do
+    begin
+      if actual^.usuario.telefono = nuevoTelefono then
+      begin
+        Result := 3;
+        Exit;
+      end;
+      actual := actual^.siguiente;
+    end;
+
+    nodoUsuario^.usuario.telefono := nuevoTelefono;
+    Result := 0;
   end;
 end;
 
@@ -495,6 +647,56 @@ begin
   Result := cabeza = nil;
 end;
 
+function TListaCorreos.EliminarCorreo(indice: Integer): TCorreo;
+var
+  actual: PNodoCorreo;
+  anterior: PNodoCorreo;
+  contador: Integer;
+  correoEliminado: TCorreo;
+begin
+  if (cabeza = nil) or (indice < 0) then
+    Exit;
+
+  contador := 0;
+  actual := cabeza;
+  anterior := nil;
+
+  // Encontrar el correo en la posición indicada
+  while (actual <> nil) and (contador < indice) do
+  begin
+    anterior := actual;
+    actual := actual^.siguiente;
+    Inc(contador);
+  end;
+
+  if actual = nil then
+    Exit;
+
+  correoEliminado := actual^.correo;
+
+  // Eliminar el nodo de la lista
+  if anterior = nil then
+  begin
+    // Es el primer nodo
+    cabeza := actual^.siguiente;
+    if cabeza <> nil then
+      cabeza^.anterior := nil;
+  end
+  else
+  begin
+    anterior^.siguiente := actual^.siguiente;
+    if actual^.siguiente <> nil then
+      actual^.siguiente^.anterior := anterior;
+  end;
+
+  if actual = cola then
+    cola := anterior;
+
+  Dispose(actual);
+  Result := correoEliminado;
+end;
+
+
 //Implementacion de TListaContactos
 constructor TListaContactos.Create;
 begin
@@ -629,18 +831,299 @@ begin
   Result := tope;
 end;
 
+// Implementación de TColaCorreos
+constructor TColaCorreos.Create;
+begin
+  frente := nil;
+  final := nil;
+end;
+
+destructor TColaCorreos.Destroy;
+var
+  actual: PNodoCola;
+begin
+  while frente <> nil do
+  begin
+    actual := frente;
+    frente := frente^.siguiente;
+    Dispose(actual);
+  end;
+  inherited Destroy;
+end;
+
+procedure TColaCorreos.Encolar(correo: TCorreo);
+var
+  nuevoNodo: PNodoCola;
+begin
+  New(nuevoNodo);
+  nuevoNodo^.correo := correo;
+  nuevoNodo^.siguiente := nil;
+
+  if final = nil then
+  begin
+    // Primera inserción
+    frente := nuevoNodo;
+    final := nuevoNodo;
+  end
+  else
+  begin
+    // Agregar al final
+    final^.siguiente := nuevoNodo;
+    final := nuevoNodo;
+  end;
+end;
+
+function TColaCorreos.Desencolar: TCorreo;
+var
+  nodoAEliminar: PNodoCola;
+begin
+  if frente <> nil then
+  begin
+    Result := frente^.correo;
+    nodoAEliminar := frente;
+    frente := frente^.siguiente;
+
+    if frente = nil then
+      final := nil;
+
+    Dispose(nodoAEliminar);
+  end;
+end;
+
+function TColaCorreos.Vacia: Boolean;
+begin
+  Result := frente = nil;
+end;
+
+function TColaCorreos.ObtenerFrente: PNodoCola;
+begin
+  Result := frente;
+end;
+
+// Implementacion de TListaComunidades
+constructor TListaComunidades.Create;
+begin
+  cabeza := nil;
+end;
+
+destructor TListaComunidades.Destroy;
+var
+  actualCom, tempCom: PNodoComunidad;
+  actualMiem, tempMiem: PNodoMiembro;
+begin
+  actualCom := cabeza;
+  while actualCom <> nil do
+  begin
+    // Liberar miembros
+    actualMiem := actualCom^.miembros;
+    while actualMiem <> nil do
+    begin
+      tempMiem := actualMiem;
+      actualMiem := actualMiem^.siguiente;
+      Dispose(tempMiem);
+    end;
+
+    tempCom := actualCom;
+    actualCom := actualCom^.siguiente;
+    Dispose(tempCom);
+  end;
+  inherited Destroy;
+end;
+
+function TListaComunidades.BuscarComunidad(nombre: String): PNodoComunidad;
+var
+  actual: PNodoComunidad;
+begin
+  actual := cabeza;
+  while actual <> nil do
+  begin
+    if actual^.nombre = nombre then
+    begin
+      Result := actual;
+      Exit;
+    end;
+    actual := actual^.siguiente;
+  end;
+  Result := nil;
+end;
+
+function TListaComunidades.CrearComunidad(nombre: String): Boolean;
+var
+  nuevaComunidad: PNodoComunidad;
+begin
+  Result := False;
+
+  // Verificar si ya existe
+  if BuscarComunidad(nombre) <> nil then
+    Exit;
+
+  // Crear nueva comunidad
+  New(nuevaComunidad);
+  nuevaComunidad^.nombre := nombre;
+  nuevaComunidad^.miembros := nil;
+  nuevaComunidad^.siguiente := cabeza;
+  cabeza := nuevaComunidad;
+
+  Result := True;
+end;
+
+function TListaComunidades.AgregarMiembro(nombreComunidad, email: String): Integer;
+var
+  comunidad: PNodoComunidad;
+  nuevoMiembro, actualMiembro: PNodoMiembro;
+begin
+  // 0 = éxito, 1 = comunidad no existe, 2 = usuario no existe, 3 = ya es miembro
+
+  comunidad := BuscarComunidad(nombreComunidad);
+  if comunidad = nil then
+  begin
+    Result := 1;
+    Exit;
+  end;
+
+  if listaUsuarios.Buscar(email) = nil then
+  begin
+    Result := 2;
+    Exit;
+  end;
+
+  // Verificar si ya es miembro
+  actualMiembro := comunidad^.miembros;
+  while actualMiembro <> nil do
+  begin
+    if actualMiembro^.emailUsuario = email then
+    begin
+      Result := 3;
+      Exit;
+    end;
+    actualMiembro := actualMiembro^.siguiente;
+  end;
+
+  // Agregar nuevo miembro
+  New(nuevoMiembro);
+  nuevoMiembro^.emailUsuario := email;
+  nuevoMiembro^.siguiente := comunidad^.miembros;
+  comunidad^.miembros := nuevoMiembro;
+
+  Result := 0;
+end;
+
+function TListaComunidades.Vacia: Boolean;
+begin
+  Result := cabeza = nil;
+end;
+
+procedure TListaComunidades.GenerarReporteComunidades(nombreArchivo: String);
+var
+  archivo: TextFile;
+  actualCom: PNodoComunidad;
+  actualMiem, anteriorMiem: PNodoMiembro;
+  contadorCom, contadorMiem: Integer;
+begin
+  AssignFile(archivo, nombreArchivo);
+  Rewrite(archivo);
+
+  try
+    WriteLn(archivo, 'digraph ReporteComunidades {');
+    WriteLn(archivo, '  rankdir=TB;');
+    WriteLn(archivo, '  node [shape=box];');
+    WriteLn(archivo, '');
+    WriteLn(archivo, '  labelloc="t";');
+    WriteLn(archivo, '  label="Reporte de Comunidades";');
+    WriteLn(archivo, '  fontsize=16;');
+    WriteLn(archivo, '');
+
+    // Colocar todas las comunidades en el mismo nivel horizontal
+    Write(archivo, '  {rank=same; ');
+    contadorCom := 1;
+    actualCom := cabeza;
+    while actualCom <> nil do
+    begin
+      Write(archivo, 'com' + IntToStr(contadorCom));
+      if actualCom^.siguiente <> nil then
+        Write(archivo, '; ');
+      actualCom := actualCom^.siguiente;
+      Inc(contadorCom);
+    end;
+    WriteLn(archivo, '}');
+    WriteLn(archivo, '');
+
+    // Definir nodos de comunidades
+    contadorCom := 1;
+    actualCom := cabeza;
+    while actualCom <> nil do
+    begin
+      WriteLn(archivo, '  com' + IntToStr(contadorCom) + ' [label="' + actualCom^.nombre + '", style=filled, fillcolor=lightblue];');
+      actualCom := actualCom^.siguiente;
+      Inc(contadorCom);
+    end;
+    WriteLn(archivo, '');
+
+    // Conexiones horizontales entre comunidades (lista de comunidades)
+    contadorCom := 1;
+    actualCom := cabeza;
+    while (actualCom <> nil) and (actualCom^.siguiente <> nil) do
+    begin
+      WriteLn(archivo, '  com' + IntToStr(contadorCom) + ' -> com' + IntToStr(contadorCom + 1) + ' [color=blue];');
+      actualCom := actualCom^.siguiente;
+      Inc(contadorCom);
+    end;
+    WriteLn(archivo, '');
+
+    // Generar miembros verticalmente debajo de cada comunidad
+    contadorCom := 1;
+    actualCom := cabeza;
+    while actualCom <> nil do
+    begin
+      actualMiem := actualCom^.miembros;
+      anteriorMiem := nil;
+      contadorMiem := 1;
+
+      while actualMiem <> nil do
+      begin
+        // Crear nodo del miembro
+        WriteLn(archivo, '  "miem' + IntToStr(contadorCom) + '_' + IntToStr(contadorMiem) + '" [label="' + actualMiem^.emailUsuario + '"];');
+
+        if anteriorMiem = nil then
+        begin
+          // Primer miembro: conectar desde la comunidad
+          WriteLn(archivo, '  com' + IntToStr(contadorCom) + ' -> "miem' + IntToStr(contadorCom) + '_' + IntToStr(contadorMiem) + '" [color=red];');
+        end
+        else
+        begin
+          // Miembros siguientes: conectar desde el anterior (lista vertical)
+          WriteLn(archivo, '  "miem' + IntToStr(contadorCom) + '_' + IntToStr(contadorMiem - 1) + '" -> "miem' + IntToStr(contadorCom) + '_' + IntToStr(contadorMiem) + '" [color=green];');
+        end;
+
+        anteriorMiem := actualMiem;
+        actualMiem := actualMiem^.siguiente;
+        Inc(contadorMiem);
+      end;
+
+      actualCom := actualCom^.siguiente;
+      Inc(contadorCom);
+    end;
+
+    WriteLn(archivo, '}');
+  finally
+    CloseFile(archivo);
+  end;
+end;
 
 
 initialization
   // Crear la lista de usuarios
   listaUsuarios := TListaUsuarios.Create;
   matrizRelaciones := TMatrizDispersa.Create;
+  listaComunidades := TListaComunidades.Create;
 
 finalization
   // Liberar memoria
   if Assigned(listaUsuarios) then
-    listaUsuarios.Free;
+     listaUsuarios.Free;
   if Assigned(matrizRelaciones) then
      matrizRelaciones.Free;
+  if Assigned(listaComunidades) then
+     listaComunidades.Free;
 end.
 

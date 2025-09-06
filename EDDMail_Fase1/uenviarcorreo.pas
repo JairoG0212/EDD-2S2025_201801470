@@ -14,8 +14,11 @@ type
   TFormEnviarCorreo = class(TForm)
     btnCancelar: TButton;
     btnEnviar: TButton;
+    chkProgramado: TCheckBox;
+    edtFecha: TEdit;
     edtAsunto: TEdit;
     edtDestinatario: TEdit;
+    lblFecha: TLabel;
     lblAsunto: TLabel;
     lblDestinatario: TLabel;
     lblMensaje: TLabel;
@@ -80,20 +83,42 @@ begin
   correo.estado := 'NL'; // No leído
   correo.programado := False;
 
-  // Agregar el correo a la bandeja del destinatario
-  nodoDestinatario^.usuario.bandejaEntrada^.AgregarCorreo(correo);
+  // Verificar si es correo programado
+  if chkProgramado.Checked then
+  begin
+    if edtFecha.Text = '' then
+    begin
+      ShowMessage('Debe especificar fecha y hora para correos programados');
+      Exit;
+    end;
 
-  // Incrementar relación en la matriz dispersa
-  matrizRelaciones.IncrementarRelacion(usuarioActual^.usuario.email, destinatario);
+    correo.programado := True;
+    correo.fecha := edtFecha.Text;
 
-  ShowMessage('Correo enviado correctamente');
+    // Agregar a la cola de correos programados del remitente
+    usuarioActual^.usuario.colaCorreos^.Encolar(correo);
 
-  //limpiar campos para proximo envio
-  edtDestinatario.Text := '';
-  edtAsunto.Text := '';
-  memoMensaje.Text := '';
+    ShowMessage('Correo programado exitosamente');
+  end
+  else
+  begin
+    correo.programado := False;
 
-  Self.Close;
+    // Agregar el correo a la bandeja del destinatario
+    nodoDestinatario^.usuario.bandejaEntrada^.AgregarCorreo(correo);
+    // Incrementar relación en la matriz dispersa
+    matrizRelaciones.IncrementarRelacion(usuarioActual^.usuario.email, destinatario);
+
+    ShowMessage('Correo enviado correctamente');
+
+    //limpiar campos para proximo envio
+    edtDestinatario.Text := '';
+    edtAsunto.Text := '';
+    memoMensaje.Text := '';
+    edtFecha.Text := '';
+
+    Self.Close;
+  end;
 end;
 
 procedure TFormEnviarCorreo.btnCancelarClick(Sender: TObject);
@@ -102,6 +127,7 @@ begin
   edtDestinatario.Text := '';
   edtAsunto.Text := '';
   memoMensaje.Text := '';
+  edtFecha.Text := '';
   Self.Close;
 end;
 

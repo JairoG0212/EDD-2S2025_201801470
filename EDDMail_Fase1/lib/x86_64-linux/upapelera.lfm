@@ -44,6 +44,7 @@ object FormPapelera: TFormPapelera
     Width = 100
     Caption = 'Eliminar'
     TabOrder = 2
+    OnClick = btnEliminarClick
   end
   object btnCerrar: TButton
     Left = 400
@@ -52,5 +53,6 @@ object FormPapelera: TFormPapelera
     Width = 100
     Caption = 'Cerrar'
     TabOrder = 3
+    OnClick = btnCerrarClick
   end
 end

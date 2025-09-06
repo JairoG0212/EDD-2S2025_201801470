@@ -2,10 +2,10 @@ object FormEnviarCorreo: TFormEnviarCorreo
   Left = 368
   Height = 400
   Top = 32
-  Width = 500
-  Caption = 'Enviar Correo'
+  Width = 569
+  Caption = 'EDDMail-Contactos'
   ClientHeight = 400
-  ClientWidth = 500
+  ClientWidth = 569
   Position = poScreenCenter
   object lblTitulo: TLabel
     Left = 200
@@ -62,7 +62,7 @@ object FormEnviarCorreo: TFormEnviarCorreo
     TabOrder = 2
   end
   object btnEnviar: TButton
-    Left = 150
+    Left = 20
     Height = 30
     Top = 320
     Width = 100
@@ -71,12 +71,46 @@ object FormEnviarCorreo: TFormEnviarCorreo
     OnClick = btnEnviarClick
   end
   object btnCancelar: TButton
-    Left = 270
+    Left = 128
     Height = 30
     Top = 320
     Width = 100
     Caption = 'Cancelar'
     TabOrder = 4
     OnClick = btnCancelarClick
+  end
+  object chkProgramado: TCheckBox
+    Left = 240
+    Height = 30
+    Top = 320
+    Width = 143
+    AutoSize = False
+    Caption = 'Programado'
+    Font.Height = -19
+    Font.Name = 'Sans'
+    ParentFont = False
+    TabOrder = 5
+  end
+  object lblFecha: TLabel
+    Left = 392
+    Height = 30
+    Top = 320
+    Width = 68
+    AutoSize = False
+    Caption = 'Fecha: '
+    Font.Height = -19
+    Font.Name = 'Sans'
+    ParentFont = False
+  end
+  object edtFecha: TEdit
+    Left = 464
+    Height = 30
+    Hint = 'Formato: DD/MM/YYYY HH:MM'
+    Top = 320
+    Width = 80
+    AutoSize = False
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 6
   end
 end
