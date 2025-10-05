@@ -7,6 +7,7 @@ object FormLogin: TFormLogin
   ClientHeight = 300
   ClientWidth = 400
   Position = poScreenCenter
+  LCLVersion = '4.2.0.0'
   object lblTitulo: TLabel
     Left = 150
     Height = 25

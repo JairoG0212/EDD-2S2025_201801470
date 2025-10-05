@@ -99,6 +99,16 @@ begin
     usuarioActual^.usuario.colaCorreos^.Encolar(correo);
 
     ShowMessage('Correo programado exitosamente');
+
+    // Limpiar campos para próximo envío
+    edtDestinatario.Text := '';
+    edtAsunto.Text := '';
+    memoMensaje.Text := '';
+    edtFecha.Text := '';
+    chkProgramado.Checked := False; // Quitar el check
+
+    Self.Close; // Cerrar el formulario
+
   end
   else
   begin

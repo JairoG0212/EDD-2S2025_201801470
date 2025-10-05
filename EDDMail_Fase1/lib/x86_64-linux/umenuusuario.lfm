@@ -1,10 +1,10 @@
 object FormMenuUsuario: TFormMenuUsuario
   Left = 193
-  Height = 545
+  Height = 479
   Top = 32
   Width = 339
   Caption = 'EDDMail - Menu Usuario'
-  ClientHeight = 545
+  ClientHeight = 479
   ClientWidth = 339
   object lblHolaAlumno: TLabel
     Left = 104
@@ -44,65 +44,58 @@ object FormMenuUsuario: TFormMenuUsuario
     TabOrder = 2
     OnClick = btnPapeleraClick
   end
-  object btnProgramarCorreo: TButton
+  object btnCorreosProgramados: TButton
     Left = 96
     Height = 32
     Top = 192
     Width = 160
-    Caption = 'Programar Correo'
-    TabOrder = 3
-  end
-  object btnCorreosProgramados: TButton
-    Left = 96
-    Height = 32
-    Top = 240
-    Width = 160
     Caption = 'Correos Programados'
-    TabOrder = 4
+    TabOrder = 3
     OnClick = btnCorreosProgramadosClick
   end
   object btnAgregarContacto: TButton
     Left = 96
     Height = 32
-    Top = 288
+    Top = 240
     Width = 160
     Caption = 'Agregar Contacto'
-    TabOrder = 5
+    TabOrder = 4
     OnClick = btnAgregarContactoClick
   end
   object btnContactos: TButton
     Left = 96
     Height = 32
-    Top = 336
+    Top = 288
     Width = 160
     Caption = 'Contactos'
-    TabOrder = 6
+    TabOrder = 5
     OnClick = btnContactosClick
   end
   object btnActualizarPerfil: TButton
     Left = 96
     Height = 32
-    Top = 384
+    Top = 336
     Width = 160
     Caption = 'Actualizar Perfil'
-    TabOrder = 7
+    TabOrder = 6
     OnClick = btnActualizarPerfilClick
   end
   object btnGenerarReportes: TButton
     Left = 96
     Height = 32
-    Top = 432
+    Top = 384
     Width = 160
     Caption = 'Generar Reportes'
-    TabOrder = 8
+    TabOrder = 7
+    OnClick = btnGenerarReportesClick
   end
   object btnCerrarSesionUsuario: TButton
     Left = 168
     Height = 32
-    Top = 488
+    Top = 432
     Width = 160
     Caption = 'Cerrar Sesion'
-    TabOrder = 9
+    TabOrder = 8
     OnClick = btnCerrarSesionUsuarioClick
   end
 end

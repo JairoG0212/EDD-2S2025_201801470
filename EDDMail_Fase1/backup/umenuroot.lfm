@@ -1,10 +1,10 @@
 object FormMenuRoot: TFormMenuRoot
   Left = 368
-  Height = 398
+  Height = 439
   Top = 32
   Width = 537
   Caption = 'EDDMail - Menu Administrador'
-  ClientHeight = 398
+  ClientHeight = 439
   ClientWidth = 537
   Position = poScreenCenter
   object lblTitulo: TLabel
@@ -58,7 +58,7 @@ object FormMenuRoot: TFormMenuRoot
   object btnCerrarSesionRoot: TButton
     Left = 312
     Height = 30
-    Top = 344
+    Top = 384
     Width = 200
     Caption = 'Cerrar Sesion'
     Font.Height = -16
@@ -90,5 +90,17 @@ object FormMenuRoot: TFormMenuRoot
     ParentFont = False
     TabOrder = 5
     OnClick = btnAgregarMiembroClick
+  end
+  object btnReporteComunidades: TButton
+    Left = 144
+    Height = 30
+    Top = 336
+    Width = 264
+    Caption = 'Reporte de Comunidades'
+    Font.Height = -16
+    Font.Name = 'Sans'
+    ParentFont = False
+    TabOrder = 6
+    OnClick = btnReporteComunidadesClick
   end
 end

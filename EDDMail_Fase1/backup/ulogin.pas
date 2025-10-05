@@ -69,12 +69,15 @@ begin
   else
     begin
     // Buscar usuario normal en la lista
-    nodoUsuario := listaUsuarios.Buscar(email);
+    nodoUsuario := listaUsuarios.Buscar(nombreUsuario);
     if (nodoUsuario <> nil) and (nodoUsuario^.usuario.password = password) then
     begin
       ShowMessage('Bienvenido ' + nodoUsuario^.usuario.nombre);
       //Ocultamos menu login
       Self.Hide;
+      //guardamos el usuario actual
+      usuarioActual := nodoUsuario;
+      //Cambiamos el nombre del label para nombre de usuario logeado
       FormMenuUsuario.lblHolaAlumno.Caption:= 'Hola: ' + nodoUsuario^.usuario.usuario;
       //Mostramos menu usuario
       FormMenuUsuario.ShowModal;

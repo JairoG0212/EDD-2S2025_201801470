@@ -115,6 +115,7 @@ begin
     edtDestinatario.Text := '';
     edtAsunto.Text := '';
     memoMensaje.Text := '';
+    edtFecha.Text := '';
 
     Self.Close;
   end;
@@ -126,6 +127,7 @@ begin
   edtDestinatario.Text := '';
   edtAsunto.Text := '';
   memoMensaje.Text := '';
+  edtFecha.Text := '';
   Self.Close;
 end;
 

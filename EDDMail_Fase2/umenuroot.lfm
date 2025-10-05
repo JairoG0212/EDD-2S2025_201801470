@@ -1,0 +1,106 @@
+object FormMenuRoot: TFormMenuRoot
+  Left = 368
+  Height = 439
+  Top = 32
+  Width = 537
+  Caption = 'EDDMail - Menu Administrador'
+  ClientHeight = 439
+  ClientWidth = 537
+  Position = poScreenCenter
+  object lblTitulo: TLabel
+    Left = 128
+    Height = 25
+    Top = 30
+    Width = 244
+    Alignment = taCenter
+    Caption = 'Menu Administrador'
+    Font.Height = -21
+    Font.Name = 'Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object btnCargaMasiva: TButton
+    Left = 144
+    Height = 30
+    Top = 96
+    Width = 264
+    Caption = 'Carga Masiva'
+    Font.Height = -16
+    Font.Name = 'Sans'
+    ParentFont = False
+    TabOrder = 0
+    OnClick = btnCargaMasivaClick
+  end
+  object btnReporteDeUsuarios: TButton
+    Left = 144
+    Height = 30
+    Top = 144
+    Width = 264
+    Caption = 'Reporte de Usuarios'
+    Font.Height = -16
+    Font.Name = 'Sans'
+    ParentFont = False
+    TabOrder = 1
+    OnClick = btnReporteDeUsuariosClick
+  end
+  object btnReporteDeRelaciones: TButton
+    Left = 144
+    Height = 30
+    Top = 192
+    Width = 264
+    Caption = 'Reporte de Relaciones'
+    Font.Height = -16
+    Font.Name = 'Sans'
+    ParentFont = False
+    TabOrder = 2
+    OnClick = btnReporteDeRelacionesClick
+  end
+  object btnCerrarSesionRoot: TButton
+    Left = 312
+    Height = 30
+    Top = 384
+    Width = 200
+    Caption = 'Cerrar Sesion'
+    Font.Height = -16
+    Font.Name = 'Sans'
+    ParentFont = False
+    TabOrder = 3
+    OnClick = btnCerrarSesionRootClick
+  end
+  object btnCrearComunida: TButton
+    Left = 144
+    Height = 30
+    Top = 240
+    Width = 264
+    Caption = 'Crear Comunidad'
+    Font.Height = -16
+    Font.Name = 'Sans'
+    ParentFont = False
+    TabOrder = 4
+    OnClick = btnCrearComunidaClick
+  end
+  object btnAgregarMiembro: TButton
+    Left = 144
+    Height = 30
+    Top = 288
+    Width = 264
+    Caption = 'Agregar Miembro A Comunidad'
+    Font.Height = -16
+    Font.Name = 'Sans'
+    ParentFont = False
+    TabOrder = 5
+    OnClick = btnAgregarMiembroClick
+  end
+  object btnReporteComunidades: TButton
+    Left = 144
+    Height = 30
+    Top = 336
+    Width = 264
+    Caption = 'Reporte de Comunidades'
+    Font.Height = -16
+    Font.Name = 'Sans'
+    ParentFont = False
+    TabOrder = 6
+    OnClick = btnReporteComunidadesClick
+  end
+end

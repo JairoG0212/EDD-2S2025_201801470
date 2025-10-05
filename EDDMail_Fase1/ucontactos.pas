@@ -34,17 +34,35 @@ implementation
 {$R *.lfm}
 
 procedure TFormContactos.btnSiguienteClick(Sender: TObject);
+var
+  nodoUsuario: PNodoUsuario;
 begin
   if (contactoActual <> nil) then
   begin
     contactoActual := contactoActual^.siguiente;
-    lblEmail.Caption := contactoActual^.email;
+
+    // Buscar información completa del usuario
+    nodoUsuario := listaUsuarios.Buscar(contactoActual^.email);
+
+    if nodoUsuario <> nil then
+    begin
+      lblEmail.Caption := 'Nombre: ' + nodoUsuario^.usuario.nombre + #13#10 +
+                         'Usuario: ' + nodoUsuario^.usuario.usuario + #13#10 +
+                         'Email: ' + nodoUsuario^.usuario.email + #13#10 +
+                         'Teléfono: ' + nodoUsuario^.usuario.telefono;
+    end
+    else
+    begin
+      lblEmail.Caption := 'Email: ' + contactoActual^.email + #13#10 +
+                         '(Información no disponible)';
+    end;
   end;
 end;
 
 procedure TFormContactos.btnAnteriorClick(Sender: TObject);
 var
   actual: PNodoContacto;
+  nodoUsuario: PNodoUsuario;
 begin
   if (contactoActual <> nil) then
   begin
@@ -54,7 +72,22 @@ begin
       actual := actual^.siguiente;
 
     contactoActual := actual;
-    lblEmail.Caption := contactoActual^.email;
+
+    // Buscar información completa del usuario
+    nodoUsuario := listaUsuarios.Buscar(contactoActual^.email);
+
+    if nodoUsuario <> nil then
+    begin
+      lblEmail.Caption := 'Nombre: ' + nodoUsuario^.usuario.nombre + #13#10 +
+                         'Usuario: ' + nodoUsuario^.usuario.usuario + #13#10 +
+                         'Email: ' + nodoUsuario^.usuario.email + #13#10 +
+                         'Teléfono: ' + nodoUsuario^.usuario.telefono;
+    end
+    else
+    begin
+      lblEmail.Caption := 'Email: ' + contactoActual^.email + #13#10 +
+                         '(Información no disponible)';
+    end;
   end;
 end;
 
@@ -64,11 +97,28 @@ begin
 end;
 
 procedure TFormContactos.CargarContactos;
+var
+  nodoUsuario: PNodoUsuario;
 begin
   if (usuarioActual <> nil) and not usuarioActual^.usuario.contactos^.Vacia then
   begin
     contactoActual := usuarioActual^.usuario.contactos^.ObtenerPrimero; // Primero de la lista circular
-    lblEmail.Caption := contactoActual^.email;
+
+    // Buscar información completa del usuario
+    nodoUsuario := listaUsuarios.Buscar(contactoActual^.email);
+
+    if nodoUsuario <> nil then
+    begin
+      lblEmail.Caption := 'Nombre: ' + nodoUsuario^.usuario.nombre + #13#10 +
+                         'Usuario: ' + nodoUsuario^.usuario.usuario + #13#10 +
+                         'Email: ' + nodoUsuario^.usuario.email + #13#10 +
+                         'Teléfono: ' + nodoUsuario^.usuario.telefono;
+    end
+    else
+    begin
+      lblEmail.Caption := 'Email: ' + contactoActual^.email + #13#10 +
+                         '(Información no disponible)';
+    end;
   end
   else
   begin

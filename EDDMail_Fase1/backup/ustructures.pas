@@ -5,7 +5,7 @@ unit ustructures;
 interface
 
 uses
-  Classes, SysUtils, fpjson, jsonparser;
+  Classes, SysUtils, fpjson, jsonparser, Process, Dialogs;
 
 type
   // Registro para Usuario
@@ -107,6 +107,7 @@ type
     function VerTope: TCorreo;
     function Vacia: Boolean;
     function ObtenerTope: PNodoPila;
+    procedure GenerarReportePapelera(nombreArchivo: String; nombreUsuario: String);
   end;
 
   // Lista simple de usuarios
@@ -124,6 +125,10 @@ type
     function ActualizarUsuario(emailActual: String; nuevoUsuario: String): Integer;
     function ActualizarTelefono(emailActual: String; nuevoTelefono: String): Integer;
     function ExisteUsuario(nombreUsuario: String): Boolean;
+    function ExisteID(id: Integer): Boolean;
+    function ExisteEmail(email: String): Boolean;
+    function ExisteTelefono(telefono: String): Boolean;
+    function ValidarUsuarioUnico(usuario: TUsuario): Integer;
   end;
 
   // Matriz dispersa para relaciones
@@ -149,6 +154,7 @@ type
       function Vacia: Boolean;
       function ObtenerPrimero: PNodoCorreo;
       function EliminarCorreo(indice: Integer): TCorreo;
+      procedure GenerarReporteCorreosRecibidos(nombreArchivo: String; nombreUsuario: String);
   end;
 
   //Lista circular para contactos
@@ -162,6 +168,7 @@ type
     function BuscarContacto(email: String): Boolean;
     function ObtenerPrimero: PnodoContacto;
     function Vacia: Boolean;
+    procedure GenerarReporteContactos(nombreArchivo: String; nombreUsuario: String);
   end;
 
   // Clase para manejar comunidades
@@ -190,6 +197,7 @@ type
     function Desencolar: TCorreo;
     function Vacia: Boolean;
     function ObtenerFrente: PNodoCola;
+    procedure GenerarReporteCorreosProgramados(nombreArchivo: String; nombreUsuario: String);
   end;
 
 var
@@ -245,7 +253,7 @@ begin
   actual := cabeza;
   while actual <> nil do
   begin
-    if actual^.usuario.email = email then
+    if actual^.usuario.usuario = email then
     begin
       Result := actual;
       Exit;
@@ -272,10 +280,14 @@ procedure TListaUsuarios.CargarDesdeJSON(nombreArchivo: String);
     jsonArray: TJSONArray;
     jsonObject: TJSONObject;
     usuario: TUsuario;
-    i: Integer;
+    i, validacion: Integer;
     fileStream: TFileStream;
     stringStream: TStringStream;
+    usuariosAgregados, usuariosRechazados: Integer;
+    mensajeResultado: string;
   begin
+    usuariosAgregados := 0;
+    usuariosRechazados := 0;
     try
       // Leer archivo JSON
       fileStream := TFileStream.Create(nombreArchivo, fmOpenRead);
@@ -311,9 +323,33 @@ procedure TListaUsuarios.CargarDesdeJSON(nombreArchivo: String);
             usuario.contactos := nil; //iniciar contactos como nil
             usuario.papelera := nil; //iniciar papelera como nil
             usuario.colaCorreos := nil; //iniciar cola correos como nil
-            Insertar(usuario);
+
+            //validar que el usuario sea unico
+            validacion := ValidarUsuarioUnico(usuario);
+
+            if validacion = 0 then
+            begin
+              Insertar(usuario);
+              Inc(usuariosAgregados);
+            end
+            else
+            begin
+              Inc(usuariosRechazados);
+            end;
           end;
+        end
+        else
+        begin
+          ShowMessage('Error: El archivo JSON no tiene el formato correcto');
+          Exit;
         end;
+
+        //Mensaje de resultado despues de la carga masiva
+        mensajeResultado := 'Carga masiva completada:' + #13#10 +
+                       'Usuarios agregados: ' + IntToStr(usuariosAgregados) + #13#10 +
+                       'Usuarios rechazados (duplicados/inválidos): ' + IntToStr(usuariosRechazados);
+        ShowMessage(mensajeResultado);
+
       finally
         jsonData.Free;
       end;
@@ -331,6 +367,7 @@ var
   contador, totalNodos: Integer;
   nodos: array of PNodoUsuario;
   i: Integer;
+  nombrePNG: String;
 begin
   AssignFile(archivo, nombreArchivo);
   Rewrite(archivo);
@@ -397,98 +434,187 @@ begin
     CloseFile(archivo);
   end;
 
-function TListaUsuarios.ExisteUsuario(nombreUsuario: String): Boolean;
-  var
-    actual: PNodoUsuario;
+  //Generar png automatico
+  nombrePNG := ChangeFileExt(nombreArchivo, '.png');
+  if FileExists('/usr/bin/dot') then
   begin
-    Result := False;
-    actual := cabeza;
-    while actual <> nil do
+    ExecuteProcess('/usr/bin/dot', ['-Tpng', nombreArchivo, '-o', nombrePNG]);
+  end;
+end;
+
+function TListaUsuarios.ExisteUsuario(nombreUsuario: String): Boolean;
+var
+  actual: PNodoUsuario;
+begin
+  Result := False;
+  actual := cabeza;
+  while actual <> nil do
+  begin
+    if actual^.usuario.usuario = nombreUsuario then
     begin
-      if actual^.usuario.usuario = nombreUsuario then
-      begin
-        Result := True;
-        Exit;
-      end;
-      actual := actual^.siguiente;
+      Result := True;
+      Exit;
     end;
+    actual := actual^.siguiente;
+  end;
+end;
+
+function TListaUsuarios.ActualizarUsuario(emailActual: String; nuevoUsuario: String): Integer;
+var
+  nodoUsuario: PNodoUsuario;
+begin
+  // 0 = éxito, 1 = campo vacío, 2 = usuario no existe, 3 = nombre usuario ya existe, 4 = mismo valor
+
+  if Trim(nuevoUsuario) = '' then
+  begin
+    Result := 1;
+    Exit;
   end;
 
-  function TListaUsuarios.ActualizarUsuario(emailActual: String; nuevoUsuario: String): Integer;
-  var
-    nodoUsuario: PNodoUsuario;
+  nodoUsuario := Buscar(emailActual);
+  if nodoUsuario = nil then
   begin
-    // 0 = éxito, 1 = campo vacío, 2 = usuario no existe, 3 = nombre usuario ya existe, 4 = mismo valor
+    Result := 2;
+    Exit;
+  end;
 
-    if Trim(nuevoUsuario) = '' then
-    begin
-      Result := 1;
-      Exit;
-    end;
+  if nodoUsuario^.usuario.usuario = nuevoUsuario then
+  begin
+    Result := 4;
+    Exit;
+  end;
 
-    nodoUsuario := Buscar(emailActual);
-    if nodoUsuario = nil then
-    begin
-      Result := 2;
-      Exit;
-    end;
+  if ExisteUsuario(nuevoUsuario) then
+  begin
+    Result := 3;
+    Exit;
+  end;
 
-    if nodoUsuario^.usuario.usuario = nuevoUsuario then
-    begin
-      Result := 4;
-      Exit;
-    end;
+  nodoUsuario^.usuario.usuario := nuevoUsuario;
+  Result := 0;
+end;
 
-    if ExisteUsuario(nuevoUsuario) then
+function TListaUsuarios.ActualizarTelefono(emailActual: String; nuevoTelefono: String): Integer;
+var
+  nodoUsuario, actual: PNodoUsuario;
+begin
+  // 0 = éxito, 1 = campo vacío, 2 = usuario no existe, 3 = teléfono ya existe, 4 = mismo valor
+
+  if Trim(nuevoTelefono) = '' then
+  begin
+    Result := 1;
+    Exit;
+  end;
+
+  nodoUsuario := Buscar(emailActual);
+  if nodoUsuario = nil then
+  begin
+    Result := 2;
+    Exit;
+  end;
+
+  if nodoUsuario^.usuario.telefono = nuevoTelefono then
+  begin
+    Result := 4;
+    Exit;
+  end;
+
+  // Verificar si el teléfono ya existe
+  actual := cabeza;
+  while actual <> nil do
+  begin
+    if actual^.usuario.telefono = nuevoTelefono then
     begin
       Result := 3;
       Exit;
     end;
-
-    nodoUsuario^.usuario.usuario := nuevoUsuario;
-    Result := 0;
+    actual := actual^.siguiente;
   end;
 
-  function TListaUsuarios.ActualizarTelefono(emailActual: String; nuevoTelefono: String): Integer;
-  var
-    nodoUsuario, actual: PNodoUsuario;
+  nodoUsuario^.usuario.telefono := nuevoTelefono;
+  Result := 0;
+end;
+
+function TListaUsuarios.ExisteID(id: Integer): Boolean;
+var
+  actual: PNodoUsuario;
+begin
+  Result := False;
+  actual := cabeza;
+  while actual <> nil do
   begin
-    // 0 = éxito, 1 = campo vacío, 2 = usuario no existe, 3 = teléfono ya existe, 4 = mismo valor
-
-    if Trim(nuevoTelefono) = '' then
+    if actual^.usuario.id = id then
     begin
-      Result := 1;
+      Result := True;
       Exit;
     end;
-
-    nodoUsuario := Buscar(emailActual);
-    if nodoUsuario = nil then
-    begin
-      Result := 2;
-      Exit;
-    end;
-
-    if nodoUsuario^.usuario.telefono = nuevoTelefono then
-    begin
-      Result := 4;
-      Exit;
-    end;
-
-    // Verificar si el teléfono ya existe
-    actual := cabeza;
-    while actual <> nil do
-    begin
-      if actual^.usuario.telefono = nuevoTelefono then
-      begin
-        Result := 3;
-        Exit;
-      end;
-      actual := actual^.siguiente;
-    end;
-
-    nodoUsuario^.usuario.telefono := nuevoTelefono;
-    Result := 0;
+    actual := actual^.siguiente;
   end;
+end;
+
+function TListaUsuarios.ExisteEmail(email: String): Boolean;
+var
+  actual: PNodoUsuario;
+begin
+  Result := False;
+  actual := cabeza;
+  while actual <> nil do
+  begin
+    if actual^.usuario.email = email then
+    begin
+      Result := True;
+      Exit;
+    end;
+    actual := actual^.siguiente;
+  end;
+end;
+
+function TListaUsuarios.ExisteTelefono(telefono: String): Boolean;
+var
+  actual: PNodoUsuario;
+begin
+  Result := False;
+  actual := cabeza;
+  while actual <> nil do
+  begin
+    if actual^.usuario.telefono = telefono then
+    begin
+      Result := True;
+      Exit;
+    end;
+    actual := actual^.siguiente;
+  end;
+end;
+
+function TListaUsuarios.ValidarUsuarioUnico(usuario: TUsuario): Integer;
+begin
+  // 0 = único, 1 = ID existe, 2 = email existe, 3 = usuario existe, 4 = teléfono existe
+
+  if ExisteID(usuario.id) then
+  begin
+    Result := 1;
+    Exit;
+  end;
+
+  if ExisteEmail(usuario.email) then
+  begin
+    Result := 2;
+    Exit;
+  end;
+
+  if ExisteUsuario(usuario.usuario) then
+  begin
+    Result := 3;
+    Exit;
+  end;
+
+  if ExisteTelefono(usuario.telefono) then
+  begin
+    Result := 4;
+    Exit;
+  end;
+
+  Result := 0;
 end;
 
 // Implementación de TMatrizDispersa
@@ -555,6 +681,7 @@ var
   actual: PNodoMatriz;
   usuarioActualPtr: PNodoUsuario;
   emailRemitente, emailDestinatario: String;
+  nombrePNG: String;
 begin
   AssignFile(archivo, nombreArchivo);
   Rewrite(archivo);
@@ -596,6 +723,13 @@ begin
     WriteLn(archivo, '}');
   finally
     CloseFile(archivo);
+  end;
+
+  //Generar png automatico
+  nombrePNG := ChangeFileExt(nombreArchivo, '.png');
+  if FileExists('/usr/bin/dot') then
+  begin
+    ExecuteProcess('/usr/bin/dot', ['-Tpng', nombreArchivo, '-o', nombrePNG]);
   end;
 end;
 
@@ -696,6 +830,57 @@ begin
   Result := correoEliminado;
 end;
 
+procedure TListaCorreos.GenerarReporteCorreosRecibidos(nombreArchivo: String; nombreUsuario: String);
+var
+  archivo: TextFile;
+  actual: PNodoCorreo;
+  contador: Integer;
+  nombrePNG: String;
+begin
+  AssignFile(archivo, nombreArchivo);
+  Rewrite(archivo);
+
+  try
+    WriteLn(archivo, 'digraph CorreosRecibidos {');
+    WriteLn(archivo, '  rankdir=TB;');
+    WriteLn(archivo, '  node [shape=record];');
+    WriteLn(archivo, '');
+    WriteLn(archivo, '  labelloc="t";');
+    WriteLn(archivo, '  label="Correos Recibidos - ' + nombreUsuario + '";');
+    WriteLn(archivo, '  fontsize=16;');
+    WriteLn(archivo, '');
+
+    contador := 1;
+    actual := cabeza;
+
+    while actual <> nil do
+    begin
+      WriteLn(archivo, '  correo' + IntToStr(contador) + ' [label="ID: ' + IntToStr(actual^.correo.id) + '\n' +
+              'De: ' + actual^.correo.remitente + '\n' +
+              'Asunto: ' + actual^.correo.asunto + '\n' +
+              'Estado: ' + actual^.correo.estado + '\n' +
+              'Fecha: ' + actual^.correo.fecha + '"];');
+
+      if actual^.siguiente <> nil then
+        WriteLn(archivo, '  correo' + IntToStr(contador) + ' -> correo' + IntToStr(contador + 1) + ';');
+
+      actual := actual^.siguiente;
+      Inc(contador);
+    end;
+
+    if contador = 1 then
+      WriteLn(archivo, '  vacio [label="No hay correos recibidos"];');
+
+    WriteLn(archivo, '}');
+  finally
+    CloseFile(archivo);
+  end;
+
+  // Generar PNG automáticamente
+  nombrePNG := ChangeFileExt(nombreArchivo, '.png');
+  if FileExists('/usr/bin/dot') then
+    ExecuteProcess('/usr/bin/dot', ['-Tpng', nombreArchivo, '-o', nombrePNG]);
+end;
 
 //Implementacion de TListaContactos
 constructor TListaContactos.Create;
@@ -773,6 +958,75 @@ begin
   Result := ultimo = nil;
 end;
 
+procedure TListaContactos.GenerarReporteContactos(nombreArchivo: String; nombreUsuario: String);
+var
+  archivo: TextFile;
+  actual: PNodoContacto;
+  contador: Integer;
+  nombrePNG: String;
+  nodoUsuario: PNodoUsuario;
+begin
+  AssignFile(archivo, nombreArchivo);
+  Rewrite(archivo);
+
+  try
+    WriteLn(archivo, 'digraph Contactos {');
+    WriteLn(archivo, '  rankdir=LR;');
+    WriteLn(archivo, '  node [shape=record, style=filled, fillcolor=lightgreen];');
+    WriteLn(archivo, '');
+    WriteLn(archivo, '  labelloc="t";');
+    WriteLn(archivo, '  label="Contactos - ' + nombreUsuario + '";');
+    WriteLn(archivo, '  fontsize=16;');
+    WriteLn(archivo, '');
+
+    if ultimo <> nil then
+    begin
+      contador := 1;
+      actual := ultimo^.siguiente; // Empezar desde el primero
+
+      repeat
+        // Buscar información completa del usuario
+        nodoUsuario := listaUsuarios.Buscar(actual^.email);
+
+        if nodoUsuario <> nil then
+        begin
+          WriteLn(archivo, '  contacto' + IntToStr(contador) + ' [label="' +
+                  'Nombre: ' + nodoUsuario^.usuario.nombre + '\n' +
+                  'Usuario: ' + nodoUsuario^.usuario.usuario + '\n' +
+                  'Email: ' + nodoUsuario^.usuario.email + '\n' +
+                  'Teléfono: ' + nodoUsuario^.usuario.telefono + '"];');
+        end
+        else
+        begin
+          WriteLn(archivo, '  contacto' + IntToStr(contador) + ' [label="Email: ' + actual^.email + '\n(Usuario no encontrado)"];');
+        end;
+
+        // Conectar con el siguiente (circular)
+        if actual^.siguiente <> ultimo^.siguiente then
+          WriteLn(archivo, '  contacto' + IntToStr(contador) + ' -> contacto' + IntToStr(contador + 1) + ';')
+        else
+          WriteLn(archivo, '  contacto' + IntToStr(contador) + ' -> contacto1 [style=dashed, color=red];'); // Conexión circular
+
+        actual := actual^.siguiente;
+        Inc(contador);
+      until actual = ultimo^.siguiente;
+    end
+    else
+    begin
+      WriteLn(archivo, '  vacio [label="No hay contactos"];');
+    end;
+
+    WriteLn(archivo, '}');
+  finally
+    CloseFile(archivo);
+  end;
+
+  // Generar PNG automáticamente
+  nombrePNG := ChangeFileExt(nombreArchivo, '.png');
+  if FileExists('/usr/bin/dot') then
+    ExecuteProcess('/usr/bin/dot', ['-Tpng', nombreArchivo, '-o', nombrePNG]);
+end;
+
 // Implementación de TPapelera
 constructor TPapelera.Create;
 begin
@@ -829,6 +1083,58 @@ end;
 function TPapelera.ObtenerTope: PNodoPila;
 begin
   Result := tope;
+end;
+
+procedure TPapelera.GenerarReportePapelera(nombreArchivo: String; nombreUsuario: String);
+var
+  archivo: TextFile;
+  actual: PNodoPila;
+  contador: Integer;
+  nombrePNG: String;
+begin
+  AssignFile(archivo, nombreArchivo);
+  Rewrite(archivo);
+
+  try
+    WriteLn(archivo, 'digraph Papelera {');
+    WriteLn(archivo, '  rankdir=TB;');
+    WriteLn(archivo, '  node [shape=record, style=filled, fillcolor=lightcoral];');
+    WriteLn(archivo, '');
+    WriteLn(archivo, '  labelloc="t";');
+    WriteLn(archivo, '  label="Papelera - ' + nombreUsuario + '";');
+    WriteLn(archivo, '  fontsize=16;');
+    WriteLn(archivo, '');
+
+    contador := 1;
+    actual := tope;
+
+    while actual <> nil do
+    begin
+      WriteLn(archivo, '  eliminado' + IntToStr(contador) + ' [label="ID: ' + IntToStr(actual^.correo.id) + '\n' +
+              'De: ' + actual^.correo.remitente + '\n' +
+              'Asunto: ' + actual^.correo.asunto + '\n' +
+              'Estado: Eliminado\n' +
+              'Fecha: ' + actual^.correo.fecha + '"];');
+
+      if actual^.siguiente <> nil then
+        WriteLn(archivo, '  eliminado' + IntToStr(contador) + ' -> eliminado' + IntToStr(contador + 1) + ';');
+
+      actual := actual^.siguiente;
+      Inc(contador);
+    end;
+
+    if contador = 1 then
+      WriteLn(archivo, '  vacio [label="Papelera vacía"];');
+
+    WriteLn(archivo, '}');
+  finally
+    CloseFile(archivo);
+  end;
+
+  // Generar PNG automáticamente
+  nombrePNG := ChangeFileExt(nombreArchivo, '.png');
+  if FileExists('/usr/bin/dot') then
+    ExecuteProcess('/usr/bin/dot', ['-Tpng', nombreArchivo, '-o', nombrePNG]);
 end;
 
 // Implementación de TColaCorreos
@@ -898,6 +1204,57 @@ end;
 function TColaCorreos.ObtenerFrente: PNodoCola;
 begin
   Result := frente;
+end;
+
+procedure TColaCorreos.GenerarReporteCorreosProgramados(nombreArchivo: String; nombreUsuario: String);
+var
+  archivo: TextFile;
+  actual: PNodoCola;
+  contador: Integer;
+  nombrePNG: String;
+begin
+  AssignFile(archivo, nombreArchivo);
+  Rewrite(archivo);
+
+  try
+    WriteLn(archivo, 'digraph CorreosProgramados {');
+    WriteLn(archivo, '  rankdir=TB;');
+    WriteLn(archivo, '  node [shape=record, style=filled, fillcolor=lightblue];');
+    WriteLn(archivo, '');
+    WriteLn(archivo, '  labelloc="t";');
+    WriteLn(archivo, '  label="Correos Programados - ' + nombreUsuario + '";');
+    WriteLn(archivo, '  fontsize=16;');
+    WriteLn(archivo, '');
+
+    contador := 1;
+    actual := frente;
+
+    while actual <> nil do
+    begin
+      WriteLn(archivo, '  programado' + IntToStr(contador) + ' [label="ID: ' + IntToStr(actual^.correo.id) + '\n' +
+              'Para: ' + actual^.correo.destinatario + '\n' +
+              'Asunto: ' + actual^.correo.asunto + '\n' +
+              'Fecha programada: ' + actual^.correo.fecha + '"];');
+
+      if actual^.siguiente <> nil then
+        WriteLn(archivo, '  programado' + IntToStr(contador) + ' -> programado' + IntToStr(contador + 1) + ';');
+
+      actual := actual^.siguiente;
+      Inc(contador);
+    end;
+
+    if contador = 1 then
+      WriteLn(archivo, '  vacio [label="No hay correos programados"];');
+
+    WriteLn(archivo, '}');
+  finally
+    CloseFile(archivo);
+  end;
+
+  // Generar PNG automáticamente
+  nombrePNG := ChangeFileExt(nombreArchivo, '.png');
+  if FileExists('/usr/bin/dot') then
+    ExecuteProcess('/usr/bin/dot', ['-Tpng', nombreArchivo, '-o', nombrePNG]);
 end;
 
 // Implementacion de TListaComunidades

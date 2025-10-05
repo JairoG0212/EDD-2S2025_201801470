@@ -1,0 +1,116 @@
+object FormEnviarCorreo: TFormEnviarCorreo
+  Left = 368
+  Height = 400
+  Top = 32
+  Width = 569
+  Caption = 'EDDMail-Contactos'
+  ClientHeight = 400
+  ClientWidth = 569
+  Position = poScreenCenter
+  object lblTitulo: TLabel
+    Left = 200
+    Height = 19
+    Top = 20
+    Width = 123
+    Alignment = taCenter
+    Caption = 'Enviar Correo'
+    Font.Height = -16
+    Font.Name = 'Sans'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lblDestinatario: TLabel
+    Left = 20
+    Height = 19
+    Top = 70
+    Width = 85
+    Caption = 'Destinatario:'
+  end
+  object edtDestinatario: TEdit
+    Left = 120
+    Height = 36
+    Top = 65
+    Width = 300
+    TabOrder = 0
+  end
+  object lblAsunto: TLabel
+    Left = 20
+    Height = 19
+    Top = 110
+    Width = 49
+    Caption = 'Asunto:'
+  end
+  object edtAsunto: TEdit
+    Left = 120
+    Height = 36
+    Top = 105
+    Width = 300
+    TabOrder = 1
+  end
+  object lblMensaje: TLabel
+    Left = 20
+    Height = 19
+    Top = 150
+    Width = 60
+    Caption = 'Mensaje:'
+  end
+  object memoMensaje: TMemo
+    Left = 120
+    Height = 150
+    Top = 145
+    Width = 300
+    TabOrder = 2
+  end
+  object btnEnviar: TButton
+    Left = 20
+    Height = 30
+    Top = 320
+    Width = 100
+    Caption = 'Enviar'
+    TabOrder = 3
+    OnClick = btnEnviarClick
+  end
+  object btnCancelar: TButton
+    Left = 128
+    Height = 30
+    Top = 320
+    Width = 100
+    Caption = 'Cancelar'
+    TabOrder = 4
+    OnClick = btnCancelarClick
+  end
+  object chkProgramado: TCheckBox
+    Left = 240
+    Height = 30
+    Top = 320
+    Width = 143
+    AutoSize = False
+    Caption = 'Programado'
+    Font.Height = -19
+    Font.Name = 'Sans'
+    ParentFont = False
+    TabOrder = 5
+  end
+  object lblFecha: TLabel
+    Left = 392
+    Height = 30
+    Top = 320
+    Width = 68
+    AutoSize = False
+    Caption = 'Fecha: '
+    Font.Height = -19
+    Font.Name = 'Sans'
+    ParentFont = False
+  end
+  object edtFecha: TEdit
+    Left = 464
+    Height = 30
+    Hint = 'Formato: DD/MM/YYYY HH:MM'
+    Top = 320
+    Width = 80
+    AutoSize = False
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 6
+  end
+end

@@ -152,13 +152,22 @@ begin
 
     if openDialog.Execute then
     begin
-      try
-        listaUsuarios.CargarDesdeJSON(openDialog.FileName);
-        ShowMessage('Usuarios cargados exitosamente desde: ' + ExtractFileName(openDialog.FileName));
-      except
-        on E: Exception do
-          ShowMessage('Error al cargar archivo: ' + E.Message);
+      // Verificar que el archivo existe
+      if not FileExists(openDialog.FileName) then
+      begin
+        ShowMessage('Error: El archivo seleccionado no existe');
+        Exit;
       end;
+
+      // Verificar extensión del archivo
+      if LowerCase(ExtractFileExt(openDialog.FileName)) <> '.json' then
+      begin
+        ShowMessage('Error: Por favor seleccione un archivo con extensión .json');
+        Exit;
+      end;
+
+      // Cargar usuarios desde JSON
+      listaUsuarios.CargarDesdeJSON(openDialog.FileName);
     end;
   finally
     openDialog.Free;

@@ -52,5 +52,6 @@ object FormContactos: TFormContactos
     Width = 80
     Caption = 'Cerrar'
     TabOrder = 2
+    OnClick = btnCerrarClick
   end
 end
