@@ -10,8 +10,9 @@ uses
   athreads,
   {$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, ulogin, ustructures, umenuroot, umenuusuario, ubandejaentrada, 
-uenviarcorreo, ucontactos, upapelera, ucorreosprogramados;
+  Forms, ulogin, ustructures, umenuroot, umenuusuario, ubandejaentrada,
+  uenviarcorreo, ucontactos, upapelera, ucorreosprogramados, ulistascomunidades,
+  uarbolbstcomunidades;
 
 {$R *.res}
 

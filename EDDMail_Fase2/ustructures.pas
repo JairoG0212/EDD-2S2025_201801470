@@ -8,6 +8,8 @@ uses
   Classes, SysUtils, fpjson, jsonparser, Process, Dialogs;
 
 type
+  PNodoMensajeComunidad = ^TNodoMensajeComunidad;
+
   // Registro para Usuario
   TUsuario = record
     id: Integer;
@@ -91,8 +93,19 @@ type
   PNodoComunidad = ^TNodoComunidad;
   TNodoComunidad = record
     nombre: String;
+    fechaCreacion: String;
+    numeroMensajes: Integer;
     miembros: PNodoMiembro;
+    mensajes: PNodoMensajeComunidad;
     siguiente: PNodoComunidad;
+  end;
+
+  // Nodo para mensajes en comunidades
+  TNodoMensajeComunidad = record
+    correo: String;
+    texto: String;
+    fechaPublicacion: String;
+    siguiente: PNodoMensajeComunidad;
   end;
 
   // Pila para papelera
@@ -174,7 +187,7 @@ type
   // Clase para manejar comunidades
   TListaComunidades = class
   private
-    cabeza: PNodoComunidad;
+  cabeza: PNodoComunidad;
   public
     constructor Create;
     destructor Destroy; override;
@@ -183,6 +196,7 @@ type
     function BuscarComunidad(nombre: String): PNodoComunidad;
     function Vacia: Boolean;
     procedure GenerarReporteComunidades(nombreArchivo: String);
+    procedure PublicarMensaje(nombreComunidad, correo, texto: String); // NUEVO
   end;
 
   // Cola para correos programados
@@ -1310,14 +1324,15 @@ var
 begin
   Result := False;
 
-  // Verificar si ya existe
   if BuscarComunidad(nombre) <> nil then
     Exit;
 
-  // Crear nueva comunidad
   New(nuevaComunidad);
   nuevaComunidad^.nombre := nombre;
+  nuevaComunidad^.fechaCreacion := FormatDateTime('dd/mm/yyyy hh:nn:ss', Now);
+  nuevaComunidad^.numeroMensajes := 0;
   nuevaComunidad^.miembros := nil;
+  nuevaComunidad^.mensajes := nil;
   nuevaComunidad^.siguiente := cabeza;
   cabeza := nuevaComunidad;
 
@@ -1467,6 +1482,48 @@ begin
   end;
 end;
 
+procedure TListaComunidades.PublicarMensaje(nombreComunidad, correo, texto: String);
+var
+  comunidad: PNodoComunidad;
+  nuevoMensaje: PNodoMensajeComunidad;
+  miembroActual: PNodoMiembro;
+  esMiembro: Boolean;
+begin
+  comunidad := BuscarComunidad(nombreComunidad);
+  if comunidad = nil then
+  begin
+    ShowMessage('Error: La comunidad no existe');
+    Exit;
+  end;
+
+  esMiembro := False;
+  miembroActual := comunidad^.miembros;
+  while miembroActual <> nil do
+  begin
+    if miembroActual^.emailUsuario = correo then
+    begin
+      esMiembro := True;
+      Break;
+    end;
+    miembroActual := miembroActual^.siguiente;
+  end;
+
+  if not esMiembro then
+  begin
+    ShowMessage('Error: Debe ser miembro de la comunidad para publicar');
+    Exit;
+  end;
+
+  New(nuevoMensaje);
+  nuevoMensaje^.correo := correo;
+  nuevoMensaje^.texto := texto;
+  nuevoMensaje^.fechaPublicacion := FormatDateTime('dd/mm/yyyy hh:nn:ss', Now);
+  nuevoMensaje^.siguiente := comunidad^.mensajes;
+  comunidad^.mensajes := nuevoMensaje;
+  Inc(comunidad^.numeroMensajes);
+
+  ShowMessage('Mensaje publicado exitosamente');
+end;
 
 initialization
   // Crear la lista de usuarios

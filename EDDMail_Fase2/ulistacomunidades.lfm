@@ -1,0 +1,7 @@
+object FormListaComunidades: TFormListaComunidades
+  Left = 473
+  Height = 240
+  Top = 32
+  Width = 320
+  Caption = 'EDDMail - Form Listas Comunidades'
+end
