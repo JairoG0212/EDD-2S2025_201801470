@@ -20,9 +20,9 @@ object FormBandejaEntrada: TFormBandejaEntrada
     ParentFont = False
   end
   object btnCerrar: TButton
-    Left = 400
+    Left = 616
     Height = 30
-    Top = 362
+    Top = 360
     Width = 170
     Caption = 'Cerrar'
     Font.Height = -12
@@ -32,9 +32,9 @@ object FormBandejaEntrada: TFormBandejaEntrada
     OnClick = btnCerrarClick
   end
   object btnEliminar: TButton
-    Left = 224
-    Height = 31
-    Top = 362
+    Left = 24
+    Height = 32
+    Top = 359
     Width = 170
     Caption = 'Eliminar'
     TabOrder = 2
@@ -85,5 +85,14 @@ object FormBandejaEntrada: TFormBandejaEntrada
     Caption = 'Az'
     TabOrder = 3
     OnClick = btnOrdenarClick
+  end
+  object btnAgregarFavorito: TButton
+    Left = 192
+    Height = 32
+    Top = 359
+    Width = 168
+    Caption = 'Favorito'
+    TabOrder = 4
+    OnClick = btnAgregarFavoritoClick
   end
 end

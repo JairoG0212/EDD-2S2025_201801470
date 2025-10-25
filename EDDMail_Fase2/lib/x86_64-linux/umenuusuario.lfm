@@ -1,10 +1,10 @@
 object FormMenuUsuario: TFormMenuUsuario
   Left = 193
-  Height = 479
+  Height = 565
   Top = 32
   Width = 339
   Caption = 'EDDMail - Menu Usuario'
-  ClientHeight = 479
+  ClientHeight = 565
   ClientWidth = 339
   object lblHolaAlumno: TLabel
     Left = 104
@@ -18,84 +18,126 @@ object FormMenuUsuario: TFormMenuUsuario
     ParentFont = False
   end
   object btnBandejaEntrada: TButton
-    Left = 96
+    Left = 64
     Height = 32
     Top = 48
-    Width = 160
+    Width = 224
     Caption = 'Bandeja de Entrada'
     TabOrder = 0
     OnClick = btnBandejaEntradaClick
   end
   object btnEnviarCorreo: TButton
-    Left = 96
+    Left = 64
     Height = 32
-    Top = 96
-    Width = 160
+    Top = 88
+    Width = 224
     Caption = 'Enviar Correo'
     TabOrder = 1
     OnClick = btnEnviarCorreoClick
   end
   object btnPapelera: TButton
-    Left = 96
+    Left = 64
     Height = 32
-    Top = 144
-    Width = 160
+    Top = 128
+    Width = 224
     Caption = 'Papelera'
     TabOrder = 2
     OnClick = btnPapeleraClick
   end
   object btnCorreosProgramados: TButton
-    Left = 96
+    Left = 64
     Height = 32
-    Top = 192
-    Width = 160
+    Top = 168
+    Width = 224
     Caption = 'Correos Programados'
     TabOrder = 3
     OnClick = btnCorreosProgramadosClick
   end
   object btnAgregarContacto: TButton
-    Left = 96
+    Left = 64
     Height = 32
-    Top = 240
-    Width = 160
+    Top = 288
+    Width = 224
     Caption = 'Agregar Contacto'
     TabOrder = 4
     OnClick = btnAgregarContactoClick
   end
   object btnContactos: TButton
-    Left = 96
+    Left = 64
     Height = 32
-    Top = 288
-    Width = 160
+    Top = 368
+    Width = 224
     Caption = 'Contactos'
     TabOrder = 5
     OnClick = btnContactosClick
   end
   object btnActualizarPerfil: TButton
-    Left = 96
+    Left = 64
     Height = 32
-    Top = 336
-    Width = 160
+    Top = 408
+    Width = 224
     Caption = 'Actualizar Perfil'
     TabOrder = 6
     OnClick = btnActualizarPerfilClick
   end
   object btnGenerarReportes: TButton
-    Left = 96
+    Left = 64
     Height = 32
-    Top = 384
-    Width = 160
+    Top = 448
+    Width = 224
     Caption = 'Generar Reportes'
+    Font.Height = -13
+    Font.Name = 'Sans'
+    ParentFont = False
     TabOrder = 7
     OnClick = btnGenerarReportesClick
   end
   object btnCerrarSesionUsuario: TButton
     Left = 168
     Height = 32
-    Top = 432
+    Top = 528
     Width = 160
     Caption = 'Cerrar Sesion'
     TabOrder = 8
     OnClick = btnCerrarSesionUsuarioClick
+  end
+  object Button1: TButton
+    Left = 64
+    Height = 32
+    Top = 488
+    Width = 224
+    Caption = 'Publicar mensaje comunidad'
+    Font.Height = -13
+    Font.Name = 'Sans'
+    ParentFont = False
+    TabOrder = 9
+    OnClick = Button1Click
+  end
+  object btnVerBorradores: TButton
+    Left = 64
+    Height = 32
+    Top = 208
+    Width = 224
+    Caption = 'Ver Borradores De Mensajes'
+    TabOrder = 10
+    OnClick = btnVerBorradoresClick
+  end
+  object btnVerFavoritos: TButton
+    Left = 64
+    Height = 32
+    Top = 248
+    Width = 224
+    Caption = 'Ver Favoritos'
+    TabOrder = 11
+    OnClick = btnVerFavoritosClick
+  end
+  object btnEliminarContacto: TButton
+    Left = 64
+    Height = 32
+    Top = 328
+    Width = 224
+    Caption = 'Eliminar Contacto'
+    TabOrder = 12
+    OnClick = btnEliminarContactoClick
   end
 end

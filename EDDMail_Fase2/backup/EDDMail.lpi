@@ -97,6 +97,24 @@
         <Filename Value="ulistascomunidades.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit>
+      <Unit>
+        <Filename Value="uarbolbstcomunidades.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="uborradores.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormBorradores"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit>
+      <Unit>
+        <Filename Value="ufavoritos.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormFavoritos"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -132,6 +150,12 @@
       </Item>
       <Item>
         <Name Value="EClassNotFound"/>
+      </Item>
+      <Item>
+        <Name Value="EJSON"/>
+      </Item>
+      <Item>
+        <Name Value="Exception"/>
       </Item>
     </Exceptions>
   </Debugging>

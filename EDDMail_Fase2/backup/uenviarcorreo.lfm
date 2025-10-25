@@ -7,7 +7,6 @@ object FormEnviarCorreo: TFormEnviarCorreo
   ClientHeight = 400
   ClientWidth = 569
   Position = poScreenCenter
-  LCLVersion = '4.2.0.0'
   object lblTitulo: TLabel
     Left = 200
     Height = 19
@@ -113,5 +112,17 @@ object FormEnviarCorreo: TFormEnviarCorreo
     ParentShowHint = False
     ShowHint = True
     TabOrder = 6
+  end
+  object chkBorrador: TCheckBox
+    Left = 240
+    Height = 30
+    Top = 360
+    Width = 220
+    AutoSize = False
+    Caption = 'Guardar como borrador'
+    Font.Height = -16
+    Font.Name = 'Sans'
+    ParentFont = False
+    TabOrder = 7
   end
 end

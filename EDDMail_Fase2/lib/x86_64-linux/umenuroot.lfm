@@ -7,6 +7,7 @@ object FormMenuRoot: TFormMenuRoot
   ClientHeight = 439
   ClientWidth = 537
   Position = poScreenCenter
+  LCLVersion = '4.2.0.0'
   object lblTitulo: TLabel
     Left = 128
     Height = 25

@@ -1,0 +1,94 @@
+{
+  "correos": [
+    {
+      "id": 7,
+      "remitente": "linus@edd.com",
+      "destinatario": "rms@edd.com",
+      "estado": "NL",
+      "asunto": "Proyecto GNU",
+      "mensaje": "¿Te animás a armar algo en GNU?",
+      "fecha_envio": "2025-10-10"
+    },
+    {
+      "id": 3,
+      "remitente": "grace@edd.com",
+      "destinatario": "bill@edd.com",
+      "estado": "NL",
+      "asunto": "Conferencia",
+      "mensaje": "¿Vas a la charla este viernes?",
+      "fecha_envio": "2025-10-08"
+    },
+    {
+      "id": 12,
+      "remitente": "smejia@edd.com",
+      "destinatario": "alovelace@edd.com",
+      "estado": "NL",
+      "asunto": "Algoritmos",
+      "mensaje": "¿Ya viste lo nuevo sobre algoritmos?",
+      "fecha_envio": "2025-10-09"
+    },
+    {
+      "id": 5,
+      "remitente": "satya@edd.com",
+      "destinatario": "linus@edd.com",
+      "estado": "NL",
+      "asunto": "Idea rápida",
+      "mensaje": "Tengo algo para mejorar Linux, ¿lo ves?",
+      "fecha_envio": "2025-10-07"
+    },
+    {
+      "id": 10,
+      "remitente": "rms@edd.com",
+      "destinatario": "bgates@edd.com",
+      "estado": "NL",
+      "asunto": "Licencias",
+      "mensaje": "Podemos charlar sobre licencias un rato.",
+      "fecha_envio": "2025-10-06"
+    },
+    {
+      "id": 14,
+      "remitente": "bgates@edd.com",
+      "destinatario": "grace@edd.com",
+      "estado": "NL",
+      "asunto": "Ideas",
+      "mensaje": "¿Tienes algo nuevo en mente?",
+      "fecha_envio": "2025-10-04"
+    },
+    {
+      "id": 1,
+      "remitente": "smejia@edd.com",
+      "destinatario": "snadella@edd.com",
+      "estado": "NL",
+      "asunto": "Reunión",
+      "mensaje": "¿Nos juntamos esta semana?",
+      "fecha_envio": "2025-10-03"
+    },
+    {
+      "id": 4,
+      "remitente": "rms@edd.com",
+      "destinatario": "ghopper@edd.com",
+      "estado": "NL",
+      "asunto": "Colaboración",
+      "mensaje": "¿Te interesa colaborar en algo libre?",
+      "fecha_envio": "2025-10-02"
+    },
+    {
+      "id": 8,
+      "remitente": "linus@edd.com",
+      "destinatario": "smejia@edd.com",
+      "estado": "NL",
+      "asunto": "Linux",
+      "mensaje": "¿Te unes a mejorar el kernel?",
+      "fecha_envio": "2025-10-01"
+    },
+    {
+      "id": 11,
+      "remitente": "alovelace@edd.com",
+      "destinatario": "snadella@edd.com",
+      "estado": "NL",
+      "asunto": "Algo rápido",
+      "mensaje": "Mira esto cuando tengas 2 mins.",
+      "fecha_envio": "2025-09-30"
+    }
+  ]
+}
